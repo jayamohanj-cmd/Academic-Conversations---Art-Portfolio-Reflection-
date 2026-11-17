@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reflection that lasts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F7F8FB; --surface:#FFFFFF; --ink:#1E1B2E; --muted:#4F4A66; --line:#DCD9E6;
+  --purple:#6B3FD4; --teal:#0B7A6C; --coral:#C7401A; --sun:#FFC929; --pink:#C2255C; --on-sun:#3D2E00;
+  --purple-t:#EEE8FD; --teal-t:#DDF3EE; --coral-t:#FFE9E0; --sun-t:#FFF3C9; --pink-t:#FCE4EE;
+  --purple-i:#4C2A9E; --teal-i:#0A5E54; --coral-i:#9E3112; --sun-i:#7A5800; --pink-i:#9C1B49;
+  --display: Fredoka, "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#16131F; --surface:#221E30; --ink:#F3F1FA; --muted:#BDB7D3; --line:#3A3450;
+    --purple-t:#2C2350; --teal-t:#12302C; --coral-t:#3A1F17; --sun-t:#3A3112; --pink-t:#3A1A28;
+    --purple-i:#C3B0FF; --teal-i:#6FD6C4; --coral-i:#FF9F80; --sun-i:#FFD95C; --pink-i:#FF8FB8;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#16131F; --surface:#221E30; --ink:#F3F1FA; --muted:#BDB7D3; --line:#3A3450;
+  --purple-t:#2C2350; --teal-t:#12302C; --coral-t:#3A1F17; --sun-t:#3A3112; --pink-t:#3A1A28;
+  --purple-i:#C3B0FF; --teal-i:#6FD6C4; --coral-i:#FF9F80; --sun-i:#FFD95C; --pink-i:#FF8FB8;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:clamp(17px,1.35vw,21px);line-height:1.55;overflow-x:hidden}
+img,svg{max-width:100%}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.05;margin:0;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--purple);outline-offset:3px;border-radius:6px}
+
+section{min-height:100vh;display:flex;align-items:center;padding:clamp(56px,8vh,96px) clamp(20px,5vw,72px);position:relative}
+.wrap{width:100%;max-width:1140px;margin:0 auto}
+.lede{font-size:1.15em;color:var(--muted);max-width:40ch}
+.chapter{font-family:var(--display);font-weight:500;font-size:1em;color:var(--muted);margin-bottom:14px}
+.h2{font-size:clamp(40px,5.4vw,76px);margin-bottom:22px;max-width:16ch}
+.talk{display:inline-flex;gap:12px;align-items:flex-start;margin-top:28px;padding:16px 20px;border-radius:18px;background:var(--sun-t);color:var(--ink);max-width:56ch}
+.talk b{font-family:var(--display);font-weight:600;color:var(--sun-i);white-space:nowrap}
+
+.btn{border:0;border-radius:999px;padding:14px 24px;font-family:var(--display);font-weight:600;font-size:1em;background:var(--purple);color:#fff;min-height:48px;transition:transform .12s ease}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+.btn.teal{background:var(--teal)}
+.btn.coral{background:var(--coral)}
+.btn.pink{background:var(--pink)}
+.btn.sun{background:var(--sun);color:var(--on-sun)}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* nav */
+.dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:20}
+.dots a{display:block;width:14px;height:14px;border-radius:7px;background:var(--line);transition:transform .2s,background .2s}
+.dots a.on{background:var(--sun);box-shadow:0 0 0 2px var(--ink);transform:scale(1.35)}
+@media (max-width:760px){.dots{display:none}}
+
+/* hero */
+#start .wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:center}
+#start h1{font-size:clamp(42px,5vw,80px);font-weight:700;letter-spacing:-.01em}
+#start .sub{margin-top:22px;font-size:1.25em;color:var(--muted);max-width:30ch}
+.kicker{font-size:.9em;color:var(--muted);margin-bottom:24px;max-width:46ch}
+.timer-inline{margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.timer-inline .big{font-family:var(--display);font-weight:600;font-size:2.4em;min-width:3.2ch;font-variant-numeric:tabular-nums}
+.collage{width:100%;aspect-ratio:1/1}
+.collage .piece{transform-box:fill-box;transform-origin:center;animation:drop .7s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes drop{from{opacity:0;transform:translateY(-60px) rotate(-14deg)}to{opacity:1;transform:none}}
+@media (max-width:860px){#start .wrap{grid-template-columns:1fr}.collage{max-width:340px;margin:0 auto}}
+
+/* one-liner */
+#problem{background:var(--surface)}
+.oneliner{font-family:var(--display);font-weight:500;font-size:clamp(40px,6vw,88px);line-height:1.1;max-width:18ch}
+.oneliner-note{margin-top:28px;max-width:52ch;color:var(--muted);font-size:1.1em}
+blockquote{margin:56px 0 0;padding:28px 32px;border-radius:24px;background:var(--purple-t);max-width:760px}
+blockquote p{font-family:var(--display);font-weight:500;font-size:clamp(26px,2.8vw,40px);line-height:1.2;color:var(--purple-i)}
+blockquote cite{display:block;margin-top:14px;font-style:normal;color:var(--muted);font-size:.9em}
+
+/* tower */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,72px);align-items:center}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.tower{display:flex;flex-direction:column-reverse;gap:8px;min-height:520px;justify-content:flex-start;padding:20px;border-radius:28px;background:var(--surface);box-shadow:inset 0 0 0 2px var(--line)}
+.block{border-radius:16px;padding:12px 16px;color:#fff;animation:land .35s cubic-bezier(.2,1.3,.4,1) both}
+.block .q{font-size:.85em;opacity:.92}
+.block .a{font-family:var(--display);font-weight:500;font-size:1.05em;line-height:1.25}
+.block.clarify{background:var(--purple)}
+.block.support{background:var(--teal)}
+.block.base{background:var(--sun);color:var(--on-sun);padding:18px 20px}
+.block.base .a{font-size:1.25em;font-weight:600}
+@keyframes land{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
+.tower-meta{margin-top:18px;color:var(--muted)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:.92em;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:8px;vertical-align:-2px;background:var(--c)}
+
+/* scale */
+#weigh{background:var(--surface)}
+.scale{position:relative;height:420px;margin-top:10px}
+.post{position:absolute;left:50%;bottom:0;width:16px;height:300px;margin-left:-8px;border-radius:8px;background:var(--ink)}
+.foot{position:absolute;left:50%;bottom:0;width:180px;height:18px;margin-left:-90px;border-radius:9px;background:var(--ink)}
+.beam{position:absolute;left:15%;width:70%;top:130px;height:14px;border-radius:7px;background:var(--ink);transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.pivot{position:absolute;left:50%;top:124px;width:28px;height:28px;margin-left:-14px;border-radius:14px;background:var(--sun);z-index:2}
+.pan{position:absolute;top:144px;width:min(40%,280px);transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.pan.l{left:calc(15% - min(20%,140px))}
+.pan.r{right:calc(15% - min(20%,140px))}
+.pan .cord{height:46px;width:2px;margin:0 auto;background:var(--muted)}
+.pan .dish{min-height:70px;border-radius:0 0 26px 26px;padding:10px 10px 14px;display:flex;flex-direction:column-reverse;gap:5px;align-items:center;justify-content:flex-start}
+.weight{width:70%;border-radius:8px;animation:land .35s cubic-bezier(.2,1.3,.4,1) both}
+.pan.l .weight{background:var(--teal)}
+.pan.r .weight{background:var(--pink)}
+.pan.l .dish{background:var(--teal-t);box-shadow:inset 0 -6px 0 var(--teal)}
+.pan.r .dish{background:var(--pink-t);box-shadow:inset 0 -6px 0 var(--pink)}
+.pan .label{font-family:var(--display);font-weight:600;text-align:center;margin-top:8px}
+.pan.l .label{color:var(--teal-i)}
+.pan.r .label{color:var(--pink-i)}
+.chip{border:0;border-radius:12px;padding:10px 12px;text-align:left;font-size:.88em;line-height:1.3;color:#fff;min-height:44px}
+.chip.g{background:var(--teal)}
+.chip.s{background:var(--pink)}
+.chip .w{font-family:var(--display);font-weight:600;margin-right:6px}
+.chip.placed{cursor:default;opacity:.45}
+.chip .on{display:none;font-size:.85em;margin-left:6px}
+.chip.placed .on{display:inline}
+.evidence{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:22px}
+.verdict{margin-top:18px;font-family:var(--display);font-weight:500;font-size:1.2em;min-height:2.6em}
+@media (max-width:640px){.scale{height:380px}.chip{font-size:.8em}}
+
+/* moves */
+.moves{display:grid;gap:14px;margin-top:8px}
+.move{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:start;padding:18px 22px;border-radius:20px;background:var(--surface);box-shadow:inset 0 0 0 2px var(--line);opacity:.25;filter:grayscale(1);transition:opacity .4s,filter .4s,transform .4s}
+.move.on{opacity:1;filter:none}
+.move .tag{font-family:var(--display);font-weight:600;font-size:1.15em;border-radius:999px;padding:6px 14px;color:#fff;text-align:center;justify-self:start}
+.move .txt{font-size:1.15em;line-height:1.45}
+.move .how{display:block;font-size:.8em;color:var(--muted);margin-top:4px}
+@media (max-width:640px){.move{grid-template-columns:1fr}}
+.vs{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:18px;color:var(--muted)}
+.vs s{font-family:var(--display);font-size:1.3em;color:var(--muted)}
+
+/* try it */
+#try{background:var(--purple);color:#fff}
+#try .chapter,#try .lede{color:#E6DEFF}
+#try .h2{max-width:24ch;font-size:clamp(32px,3.6vw,52px);margin-bottom:10px}
+.prompt-big{font-family:var(--display);font-weight:500;font-size:clamp(26px,2.8vw,40px);line-height:1.15;margin:8px 0 24px;max-width:32ch;color:var(--sun)}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:stretch}
+@media (max-width:900px){.stage{grid-template-columns:1fr}}
+.panel{border-radius:26px;padding:26px;background:rgba(255,255,255,.12)}
+.steps{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.steps button{border:0;border-radius:999px;padding:10px 16px;min-height:44px;font-family:var(--display);font-weight:600;background:rgba(255,255,255,.16);color:#fff}
+.steps button.on{background:#fff;color:var(--purple-i)}
+:root[data-theme="dark"] .steps button.on{color:#4C2A9E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .steps button.on{color:#4C2A9E}}
+.clock{font-family:var(--display);font-weight:600;font-size:clamp(72px,8vw,128px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.clock.done{color:var(--sun)}
+.stepname{font-family:var(--display);font-weight:600;font-size:1.4em;margin-bottom:6px}
+.instr{font-size:1.05em;color:#F1ECFF;min-height:3.2em}
+.panel .row{margin-top:20px}
+.panel .btn{background:#fff;color:#4C2A9E}
+.panel .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.stems h3{font-size:1.3em;margin-bottom:14px}
+.stems ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.stems li{padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.12);font-size:1.02em}
+.stems li b{font-family:var(--display);font-weight:600;color:var(--sun);margin-right:6px}
+
+/* protocol bar */
+.bar{display:flex;width:100%;border-radius:22px;overflow:hidden;margin:26px 0 14px;min-height:150px}
+.seg{padding:16px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.seg b{font-family:var(--display);font-weight:600;font-size:1.25em;line-height:1.1}
+.seg span{font-size:.9em}
+.seg.jot{color:var(--on-sun)}
+.bar-notes{display:flex;font-size:.85em;line-height:1.35;color:var(--muted)}
+.bar-notes p{min-width:0;padding:0 16px}
+@media (max-width:760px){.bar{flex-direction:column}.seg{flex-basis:auto!important;min-height:64px}.bar-notes{display:none}}
+
+/* prompts */
+#prompts{background:var(--surface)}
+.deck{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,4vw,56px);align-items:center}
+@media (max-width:900px){.deck{grid-template-columns:1fr}}
+.card{position:relative;min-height:340px;border-radius:30px;padding:34px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;background:var(--purple);transform:rotate(-1.5deg);box-shadow:12px 12px 0 var(--sun)}
+.card.flip{animation:flip .45s ease}
+@keyframes flip{0%{transform:rotate(-1.5deg) scale(1)}45%{transform:rotate(3deg) scale(.94)}100%{transform:rotate(-1.5deg) scale(1)}}
+.card .mv{font-family:var(--display);font-weight:600;font-size:1.1em;opacity:.95}
+.card .pr{font-family:var(--display);font-weight:500;font-size:clamp(28px,3vw,42px);line-height:1.15}
+.card .ct{font-size:.85em;opacity:.9}
+.picks{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
+/* decide */
+.decide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:10px}
+@media (max-width:860px){.decide{grid-template-columns:1fr}}
+.q3{border-radius:24px;padding:26px;min-height:220px;display:flex;flex-direction:column;gap:14px}
+.q3 .n{font-family:var(--display);font-weight:700;font-size:56px;line-height:1}
+.q3 p{font-family:var(--display);font-weight:500;font-size:1.35em;line-height:1.2}
+.q3 small{font-size:.85em;color:var(--muted)}
+.q3.a{background:var(--teal-t)}.q3.a .n{color:var(--teal-i)}
+.q3.b{background:var(--coral-t)}.q3.b .n{color:var(--coral-i)}
+.q3.c{background:var(--pink-t)}.q3.c .n{color:var(--pink-i)}
+
+#close{min-height:80vh;text-align:center}
+#close h2{font-size:clamp(48px,8vw,128px);font-weight:700}
+#close p{margin:24px auto 0;color:var(--muted);max-width:44ch}
+.dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:10px}
+@media (max-width:760px){.dl{grid-template-columns:1fr}}
+.dl a{min-width:0;display:flex;flex-direction:column;gap:12px;padding:26px;border-radius:24px;text-decoration:none;color:var(--ink);transition:transform .15s ease}
+.dl a:hover{transform:translateY(-3px)}
+.dl a.t{background:var(--purple-t)}.dl a.s{background:var(--teal-t)}
+.dl .who{font-family:var(--display);font-weight:600;font-size:.9em}
+.dl a.t .who{color:var(--purple-i)}.dl a.s .who{color:var(--teal-i)}
+.dl h3{font-size:clamp(26px,2.6vw,36px)}
+.dl small{color:var(--muted);font-size:.88em}
+.dl .btn{align-self:flex-start;margin-top:auto;display:inline-flex;align-items:center;gap:8px}
+.hero-dl{font-family:var(--display);font-weight:500;color:var(--purple-i)}
+footer{padding:28px clamp(20px,5vw,72px) 40px;font-size:.82em;color:var(--muted);text-align:center}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<nav class="dots" aria-label="Sections">
+  <a href="#start" title="Start" aria-label="Start"></a>
+  <a href="#problem" title="The one-liner" aria-label="The one-liner"></a>
+  <a href="#build" title="Building ideas" aria-label="Building ideas"></a>
+  <a href="#weigh" title="Collaborative arguments" aria-label="Collaborative arguments"></a>
+  <a href="#moves" title="Four moves" aria-label="Four moves"></a>
+  <a href="#try" title="Your turn" aria-label="Your turn"></a>
+  <a href="#protocol" title="The student protocol" aria-label="The student protocol"></a>
+  <a href="#prompts" title="Prompt deck" aria-label="Prompt deck"></a>
+  <a href="#decide" title="Decide together" aria-label="Decide together"></a>
+  <a href="#handouts" title="Handouts" aria-label="Handouts"></a>
+</nav>
+
+<main>
+
+<!-- 1. START -->
+<section id="start">
+  <div class="wrap">
+    <div>
+      <p class="kicker">A workshop on portfolio reflection, built on Chapters 2 and 3 of Jeff Zwiers’ <i>Next Steps with Academic Conversations</i>.</p>
+      <h1>Think of something you learned years ago that still sticks.</h1>
+      <p class="sub">What made it stick?</p>
+      <div class="timer-inline">
+        <button class="btn sun" id="heroBtn" type="button">Give me 60 seconds</button>
+        <span class="big" id="heroClock" aria-live="polite">1:00</span>
+        <a class="hero-dl" href="#handouts">Get the handouts ↓</a>
+      </div>
+    </div>
+    <svg class="collage" viewBox="0 0 400 400" role="img" aria-label="Paper-cut shapes stacked like building blocks">
+      <rect class="piece" style="animation-delay:.05s" x="70" y="300" width="260" height="70" rx="18" fill="#FFC929"/>
+      <rect class="piece" style="animation-delay:.2s" x="95" y="226" width="140" height="66" rx="16" fill="#6B3FD4" transform="rotate(-3 165 259)"/>
+      <rect class="piece" style="animation-delay:.32s" x="240" y="228" width="80" height="64" rx="16" fill="#0B7A6C" transform="rotate(4 280 260)"/>
+      <rect class="piece" style="animation-delay:.44s" x="130" y="152" width="150" height="66" rx="16" fill="#C2255C" transform="rotate(2 205 185)"/>
+      <circle class="piece" style="animation-delay:.58s" cx="205" cy="96" r="46" fill="#C7401A"/>
+      <path class="piece" style="animation-delay:.7s" d="M40 96 q 18 -26 36 0 t 36 0" fill="none" stroke="#6B3FD4" stroke-width="9" stroke-linecap="round"/>
+      <circle class="piece" style="animation-delay:.78s" cx="326" cy="70" r="14" fill="#0B7A6C"/>
+      <path class="piece" style="animation-delay:.84s" d="M300 150 l16 -28 l16 28 z" fill="#FFC929"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <p class="chapter">Most portfolio reflections sound like this</p>
+    <p class="oneliner">“I learned a lot this semester.”</p>
+    <p class="oneliner-note">Zwiers calls this kind of turn a one-liner: true, polite, and finished before it starts. Nothing gets built, so nothing sticks.</p>
+    <blockquote>
+      <p>“Conversation was not invented to help people choose right answers on tests.”</p>
+      <cite>Jeff Zwiers, <i>Next Steps with Academic Conversations</i> (Stenhouse, 2019)</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- 3. BUILD -->
+<section id="build">
+  <div class="wrap split">
+    <div>
+      <p class="chapter">Chapter 2: Building Ideas</p>
+      <h2 class="h2">Ideas get built one turn at a time.</h2>
+      <p class="lede">Zwiers asks students to see themselves as idea builders. Partners take an idea and make it stronger with two moves: clarifying what it means and supporting it with evidence.</p>
+      <div class="row" style="margin-top:28px">
+        <button class="btn" id="addClarify" type="button">Ask to clarify</button>
+        <button class="btn teal" id="addSupport" type="button">Add support</button>
+        <button class="btn ghost" id="resetTower" type="button">Start over</button>
+      </div>
+      <div class="legend"><span style="--c:var(--sun)">The idea</span><span style="--c:var(--purple)">Clarify</span><span style="--c:var(--teal)">Support</span></div>
+      <p class="tower-meta" id="towerMeta" aria-live="polite">One idea, no turns yet. Click to build it up.</p>
+      <div class="talk"><b>Turn and talk</b><span>Which turn did the most work? What would a one-liner have missed?</span></div>
+    </div>
+    <div class="tower" id="tower" aria-label="Idea tower">
+      <div class="block base"><div class="q">A student’s idea</div><div class="a">Experimenting with materials helped me find my voice.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. WEIGH -->
+<section id="weigh">
+  <div class="wrap">
+    <div class="split" style="align-items:start">
+      <div>
+        <p class="chapter">Chapter 3: Collaborative Arguments</p>
+        <h2 class="h2">Argue to decide, not to win.</h2>
+        <p class="lede">In a collaborative argument, partners build up every side before choosing. Then they weigh the evidence. Honest reflection works the same way: build the case for your growth and the case against it.</p>
+        <div class="evidence" id="evidence"></div>
+        <div class="row" style="margin-top:14px"><button class="btn ghost" id="resetScale" type="button">Empty the scale</button></div>
+      </div>
+      <div>
+        <div class="scale" aria-hidden="true">
+          <div class="foot"></div><div class="post"></div>
+          <div class="beam" id="beam"></div><div class="pivot"></div>
+          <div class="pan l" id="panL"><div class="cord"></div><div class="dish" id="dishL"></div><div class="label">I grew a lot</div></div>
+          <div class="pan r" id="panR"><div class="cord"></div><div class="dish" id="dishR"></div><div class="label">I still have far to go</div></div>
+        </div>
+        <p class="verdict" id="verdict" aria-live="polite">Tap evidence to place it on the scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. MOVES -->
+<section id="moves">
+  <div class="wrap">
+    <p class="chapter">Putting it together</p>
+    <h2 class="h2">A deep reflection is a built idea.</h2>
+    <div class="vs"><span>Instead of</span><s>“I tried a lot of new things in art this semester.”</s></div>
+    <div class="moves" id="moveList">
+      <div class="move"><span class="tag" style="background:var(--purple)">Pose</span><p class="txt">My biggest growth was finding my own voice by experimenting with materials.<span class="how">A specific claim about my learning</span></p></div>
+      <div class="move"><span class="tag" style="background:var(--purple)">Clarify</span><p class="txt">By “voice” I mean choices that feel like mine, not copied from an example.<span class="how">What my words mean</span></p></div>
+      <div class="move"><span class="tag" style="background:var(--teal)">Support</span><p class="txt">I began using only pencil because it felt safe. In my final collage, I combined ink, fabric and family photos to tell my grandmother’s story, after a critique asked, “Where are you in this work?”<span class="how">Evidence from my portfolio</span></p></div>
+      <div class="move"><span class="tag" style="background:var(--pink)">Weigh</span><p class="txt">Some experiments failed, and I still play it safe near deadlines, so taking risks is my next goal.<span class="how">The other side, and what comes next</span></p></div>
+    </div>
+    <div class="row" style="margin-top:24px">
+      <button class="btn" id="nextMove" type="button">Add the next move</button>
+      <button class="btn ghost" id="resetMoves" type="button">Start over</button>
+    </div>
+  </div>
+</section>
+
+<!-- 6. TRY -->
+<section id="try">
+  <div class="wrap">
+    <p class="chapter">Your turn</p>
+    <h2 class="h2">Reflect on your own semester, the way students will.</h2>
+    <p class="prompt-big">What’s one thing you got better at as a teacher this semester?</p>
+    <div class="stage">
+      <div class="panel">
+        <div class="steps" id="steps" role="group" aria-label="Protocol steps"></div>
+        <div class="stepname" id="stepName"></div>
+        <p class="instr" id="stepInstr"></p>
+        <div class="clock" id="clock" aria-live="polite">1:00</div>
+        <div class="row">
+          <button class="btn" id="startBtn" type="button">Start</button>
+          <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+          <button class="btn ghost" id="nextBtn" type="button">Next step</button>
+        </div>
+      </div>
+      <div class="panel stems">
+        <h3>Listeners, ask one or two</h3>
+        <ul>
+          <li><b>Clarify</b>What do you mean by “better”?</li>
+          <li><b>Support</b>What would I see in your classroom that shows it?</li>
+          <li><b>Support</b>What did it look like at the start of the semester?</li>
+          <li><b>Weigh</b>Where is it still hard?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. PROTOCOL -->
+<section id="protocol">
+  <div class="wrap">
+    <p class="chapter">What students do</p>
+    <h2 class="h2">Think, write, talk, rewrite in about 25 minutes.</h2>
+    <p class="lede">The same routine you just did, sized for one part of a class period. It borrows from Zwiers’ Stronger and Clearer Each Time: each new partner helps the idea get sharper.</p>
+    <div class="bar" role="img" aria-label="Timeline: Think 3 minutes, Write 6, Talk 8, Jot 2, Rewrite 6">
+      <div class="seg" style="flex:3;background:var(--purple)"><b>Think</b><span>3 min</span></div>
+      <div class="seg" style="flex:6;background:var(--teal)"><b>Write</b><span>6 min</span></div>
+      <div class="seg" style="flex:8;background:var(--coral)"><b>Talk</b><span>8 min</span></div>
+      <div class="seg jot" style="flex:2;background:var(--sun)"><b>Jot</b><span>2 min</span></div>
+      <div class="seg" style="flex:6;background:var(--pink)"><b>Rewrite</b><span>6 min</span></div>
+    </div>
+    <div class="bar-notes">
+      <p style="flex:3">Pick a question and two artworks as proof.</p>
+      <p style="flex:6">Finish four sentence starters.</p>
+      <p style="flex:8">Two partners. One minute each, then questions.</p>
+      <p style="flex:2">Note what partners asked.</p>
+      <p style="flex:6">Revise with the checklist. Finish at home.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. PROMPTS -->
+<section id="prompts">
+  <div class="wrap deck">
+    <div>
+      <p class="chapter">The prompt deck</p>
+      <h2 class="h2">Draw a prompt.</h2>
+      <p class="lede">Good prompts ask for a built idea, not a feeling. Pick a move, or let the deck choose.</p>
+      <div class="picks" id="picks"></div>
+    </div>
+    <div class="card" id="card" aria-live="polite">
+      <div class="mv" id="cardMove">Any move</div>
+      <div class="pr" id="cardText">Tap a button to draw your first prompt.</div>
+      <div class="ct" id="cardCount"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. DECIDE -->
+<section id="decide">
+  <div class="wrap">
+    <p class="chapter">Before we leave</p>
+    <h2 class="h2">Decide three things together.</h2>
+    <div class="decide">
+      <div class="q3 a"><span class="n">1</span><p>Which three to five prompts will every student answer?</p><small>Use the deck and the handout’s prompt bank.</small></div>
+      <div class="q3 b"><span class="n">2</span><p>When will we run the 25-minute protocol?</p><small>One class period, before portfolios are due.</small></div>
+      <div class="q3 c"><span class="n">3</span><p>How will we assess the reflections?</p><small>Could the rewrite checklist double as the rubric?</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. HANDOUTS -->
+<section id="handouts">
+  <div class="wrap">
+    <p class="chapter">Take it with you</p>
+    <h2 class="h2">Download the handouts.</h2>
+    <div class="dl">
+      <a class="t" href="handouts/teacher-handout-reflection-that-lasts.pdf" download>
+        <span class="who">For teachers · 3 pages</span>
+        <h3>Reflection that lasts</h3>
+        <small>The ideas from Chapters 2 and 3, the four moves, a one-liner vs. built-up example, the 25-minute protocol and a prompt bank.</small>
+        <span class="btn">Download PDF ↓</span>
+      </a>
+      <a class="s" href="handouts/student-handout-portfolio-reflection.pdf" download>
+        <span class="who">For students · 2 pages</span>
+        <h3>My portfolio reflection</h3>
+        <small>Think, write, talk, jot, rewrite. Print double-sided on Letter paper, one per student.</small>
+        <span class="btn teal">Download PDF ↓</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="close">
+  <div class="wrap">
+    <h2>We remember what we build.</h2>
+    <p>Look back at what you thought of at the start. Chances are, you built it, argued about it, or made something with it.</p>
+  </div>
+</section>
+
+</main>
+<footer>Ideas adapted from Jeff Zwiers, <i>Next Steps with Academic Conversations: New Ideas for Improving Learning Through Classroom Talk</i> (Stenhouse, 2019), Chapters 2–3. Student examples are illustrative.</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fmt(s){var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r;}
+  function beep(){
+    try{
+      var A=window.AudioContext||window.webkitAudioContext; if(!A) return;
+      var c=new A(), o=c.createOscillator(), g=c.createGain();
+      o.type='sine'; o.frequency.value=660; g.gain.setValueAtTime(.0001,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.25,c.currentTime+.02); g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.9);
+      o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+.95);
+    }catch(e){}
+  }
+
+  /* hero timer */
+  var hb=document.getElementById('heroBtn'), hc=document.getElementById('heroClock'), ht=null, hs=60;
+  hb.addEventListener('click',function(){
+    if(ht){clearInterval(ht); ht=null; hs=60; hc.textContent='1:00'; hb.textContent='Give me 60 seconds'; return;}
+    hs=60; hc.textContent=fmt(hs); hb.textContent='Reset';
+    ht=setInterval(function(){hs--; hc.textContent=fmt(hs); if(hs<=0){clearInterval(ht); ht=null; hc.textContent='Share it'; hb.textContent='Give me 60 seconds'; beep();}},1000);
+  });
+
+  /* idea tower */
+  var clar=[["What do you mean by “voice”?","Choices that feel like mine, not copied."],["What counts as experimenting?","Using a material I had never tried before."],["Can you say it another way?","I stopped making safe art."]];
+  var supp=[["Where can I see it?","My final collage: ink, fabric and family photos."],["What did it look like before?","Every early piece was pencil only."],["What pushed you?","A critique asked, “Where are you in this work?”"]];
+  var ci=0, si=0, tower=document.getElementById('tower'), meta=document.getElementById('towerMeta');
+  var bC=document.getElementById('addClarify'), bS=document.getElementById('addSupport');
+  function addBlock(kind,pair){
+    var d=document.createElement('div'); d.className='block '+kind;
+    var q=document.createElement('div'); q.className='q'; q.textContent=pair[0];
+    var a=document.createElement('div'); a.className='a'; a.textContent=pair[1];
+    d.appendChild(q); d.appendChild(a); tower.appendChild(d); updMeta();
+  }
+  function updMeta(){
+    var n=ci+si;
+    bC.disabled = ci>=clar.length; bS.disabled = si>=supp.length;
+    if(n===0) meta.textContent='One idea, no turns yet. Click to build it up.';
+    else if(n<6) meta.textContent=n+(n===1?' turn':' turns')+' so far: '+ci+' clarify, '+si+' support.';
+    else meta.textContent='Six turns. Same idea, now clear, specific and backed by evidence.';
+  }
+  bC.addEventListener('click',function(){ if(ci<clar.length) addBlock('clarify',clar[ci++]); });
+  bS.addEventListener('click',function(){ if(si<supp.length) addBlock('support',supp[si++]); });
+  document.getElementById('resetTower').addEventListener('click',function(){
+    while(tower.children.length>1) tower.removeChild(tower.lastChild); ci=0; si=0; updMeta();
+  });
+
+  /* scale */
+  var ev=[
+    {t:"Final collage mixes three new materials",w:3,s:'g'},
+    {t:"I go back to pencil when I’m rushed",w:2,s:'s'},
+    {t:"Critique feedback changed my plan",w:2,s:'g'},
+    {t:"Two experiments failed",w:1,s:'s'},
+    {t:"My artist statement explains my choices",w:2,s:'g'},
+    {t:"I still copy reference images closely",w:2,s:'s'}
+  ];
+  var evBox=document.getElementById('evidence'), dL=document.getElementById('dishL'), dR=document.getElementById('dishR');
+  var beam=document.getElementById('beam'), panL=document.getElementById('panL'), panR=document.getElementById('panR'), verdict=document.getElementById('verdict');
+  var wG=0, wS=0, placed=0;
+  function renderEvidence(){
+    evBox.innerHTML=''; wG=0; wS=0; placed=0; dL.innerHTML=''; dR.innerHTML='';
+    ev.forEach(function(e){
+      var b=document.createElement('button'); b.type='button'; b.className='chip '+e.s;
+      var w=document.createElement('span'); w.className='w'; w.textContent='+'+e.w;
+      b.appendChild(w); b.appendChild(document.createTextNode(e.t)); var on=document.createElement('span'); on.className='on'; on.textContent='(on the scale)'; b.appendChild(on);
+      b.setAttribute('aria-label','Place on "'+(e.s==='g'?'I grew a lot':'I still have far to go')+'": '+e.t+', weight '+e.w);
+      b.addEventListener('click',function(){
+        if(b.classList.contains('placed')) return;
+        b.classList.add('placed'); b.disabled=true;
+        var wt=document.createElement('div'); wt.className='weight'; wt.style.height=(10+e.w*9)+'px';
+        (e.s==='g'?dL:dR).appendChild(wt);
+        if(e.s==='g') wG+=e.w; else wS+=e.w; placed++; tilt();
+      });
+      evBox.appendChild(b);
+    });
+    tilt();
+  }
+  function tilt(){
+    var diff=wS-wG, ang=Math.max(-12,Math.min(12,diff*4));
+    beam.style.transform='rotate('+ang+'deg)';
+    var half=beam.offsetWidth/2, dy=half*Math.sin(ang*Math.PI/180);
+    panL.style.transform='translateY('+(-dy)+'px)'; panR.style.transform='translateY('+dy+'px)';
+    if(placed===0) verdict.textContent='Tap evidence to place it on the scale.';
+    else if(placed<ev.length) verdict.textContent= wG>wS ? 'Leaning toward growth. Keep building the other side before deciding.' : (wS>wG ? 'Leaning toward “still far to go.” Keep building the other side.' : 'Balanced for now. Keep adding evidence.');
+    else verdict.textContent='Both sides are built. The growth side is heavier, and the lighter side names the next goal.';
+  }
+  document.getElementById('resetScale').addEventListener('click',renderEvidence);
+  window.addEventListener('resize',tilt);
+  renderEvidence();
+
+  /* moves */
+  var moves=[].slice.call(document.querySelectorAll('#moveList .move')), mi=0, nm=document.getElementById('nextMove');
+  function updMoves(){ moves.forEach(function(m,i){ m.classList.toggle('on', i<mi); }); nm.disabled = mi>=moves.length; }
+  nm.addEventListener('click',function(){ if(mi<moves.length){ mi++; updMoves(); } });
+  document.getElementById('resetMoves').addEventListener('click',function(){ mi=0; updMoves(); });
+  updMoves();
+
+  /* try-it timer */
+  var steps=[
+    {n:'Think',m:1,i:'Think of one thing you got better at. Recall a moment that proves it.'},
+    {n:'Write',m:2,i:'Write two or three sentences. Start with your idea, then your proof.'},
+    {n:'Talk 1',m:2,i:'Partner A shares for one minute. Partner B asks one or two questions. Swap.'},
+    {n:'Talk 2',m:2,i:'New partner. Say it again, stronger and clearer this time.'},
+    {n:'Rewrite',m:2,i:'Revise your sentences. What did your partners help you add?'}
+  ];
+  var sBox=document.getElementById('steps'), sName=document.getElementById('stepName'), sIn=document.getElementById('stepInstr'), clk=document.getElementById('clock');
+  var startBtn=document.getElementById('startBtn'), cur=0, left=0, tid=null;
+  steps.forEach(function(s,i){ var b=document.createElement('button'); b.type='button'; b.textContent=s.n; b.addEventListener('click',function(){ go(i); }); sBox.appendChild(b); });
+  function go(i){
+    stop(); cur=i; left=steps[i].m*60;
+    [].forEach.call(sBox.children,function(b,j){ b.classList.toggle('on', j===i); b.setAttribute('aria-pressed', j===i?'true':'false'); });
+    sName.textContent=(i+1)+' of '+steps.length+': '+steps[i].n+' ('+steps[i].m+' min)';
+    sIn.textContent=steps[i].i; clk.textContent=fmt(left); clk.classList.remove('done');
+  }
+  function stop(){ if(tid){ clearInterval(tid); tid=null; } startBtn.textContent='Start'; }
+  startBtn.addEventListener('click',function(){
+    if(tid){ stop(); startBtn.textContent='Resume'; return; }
+    if(left<=0) go(cur);
+    startBtn.textContent='Pause';
+    tid=setInterval(function(){ left--; clk.textContent=fmt(Math.max(0,left)); if(left<=0){ stop(); clk.textContent='Time'; clk.classList.add('done'); beep(); } },1000);
+  });
+  document.getElementById('resetBtn').addEventListener('click',function(){ go(cur); });
+  document.getElementById('nextBtn').addEventListener('click',function(){ go((cur+1)%steps.length); });
+  go(0);
+
+  /* prompt deck */
+  var deck={
+    Pose:{c:'var(--purple)',p:['What is the most important idea or skill you built this semester? Say it in one sentence.','What can you explain now that you couldn’t at the start?','Which artwork feels most like “me,” and why?']},
+    Clarify:{c:'var(--purple)',p:['When you say you “got better,” better at what, exactly?','Explain your biggest learning to someone who wasn’t in this class.','What does “voice” mean in your own art?']},
+    Support:{c:'var(--teal)',p:['Compare an early piece with a later one. What specifically changed?','What feedback changed your work, and how?','Which material or method helped you most? Show where.']},
+    Weigh:{c:'var(--pink)',p:['Make the case that you grew a lot. Now make the case you still have far to go. Which has stronger evidence?','The piece you’re proudest of and the one that taught you most: same or different?','What risk did you take, and was it worth it?']},
+    Transfer:{c:'var(--coral)',p:['Where outside this class could you use what you learned?','What idea will you keep building next year, and how?','What advice would you give a student starting this course?']}
+  };
+  var used={}, drawn=0, card=document.getElementById('card'), cm=document.getElementById('cardMove'), ctx=document.getElementById('cardText'), cc=document.getElementById('cardCount'), picks=document.getElementById('picks');
+  var keys=Object.keys(deck);
+  function draw(k){
+    if(!k) k=keys[Math.floor(Math.random()*keys.length)];
+    var list=deck[k].p; used[k]=used[k]||[];
+    if(used[k].length>=list.length) used[k]=[];
+    var pool=list.filter(function(_,i){ return used[k].indexOf(i)<0; });
+    var choice=pool[Math.floor(Math.random()*pool.length)]; used[k].push(list.indexOf(choice));
+    card.style.background=deck[k].c; cm.textContent=k; ctx.textContent=choice; drawn++;
+    cc.textContent=drawn+(drawn===1?' prompt drawn':' prompts drawn');
+    if(!reduce){ card.classList.remove('flip'); void card.offsetWidth; card.classList.add('flip'); }
+  }
+  var colors={Pose:'',Clarify:'',Support:'teal',Weigh:'pink',Transfer:'coral'};
+  keys.forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.className='btn '+colors[k]; b.textContent=k; b.addEventListener('click',function(){ draw(k); }); picks.appendChild(b); });
+  var any=document.createElement('button'); any.type='button'; any.className='btn sun'; any.textContent='Surprise me'; any.addEventListener('click',function(){ draw(); }); picks.appendChild(any);
+
+  /* nav dots + presenter keys */
+  var secs=[].slice.call(document.querySelectorAll('main > section')), dots=[].slice.call(document.querySelectorAll('.dots a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ var id=e.target.id; dots.forEach(function(d){ d.classList.toggle('on', d.getAttribute('href')==='#'+id); }); } }); },{threshold:.5});
+    secs.forEach(function(s){ io.observe(s); });
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if(e.key!=='ArrowRight' && e.key!=='ArrowLeft') return;
+    var y=window.scrollY+10, idx=0;
+    secs.forEach(function(s,i){ if(s.offsetTop<=y) idx=i; });
+    var t=e.key==='ArrowRight'?Math.min(secs.length-1,idx+1):Math.max(0,idx-1);
+    secs[t].scrollIntoView({behavior: reduce?'auto':'smooth'}); e.preventDefault();
+  });
+})();
+</script>
+</body>
+</html>
